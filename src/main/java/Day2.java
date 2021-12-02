@@ -1,12 +1,7 @@
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 
 public class Day2 {
-    public static int taskOne(InputStream input) {
-        final var lines = getLines(input);
+    public static int taskOne(LinkedList<String> lines) {
         var horizontalPosition = 0;
         var depth = 0;
 
@@ -25,8 +20,7 @@ public class Day2 {
         return horizontalPosition * depth;
     }
 
-    public static int taskTwo(InputStream input) {
-        final var lines = getLines(input);
+    public static int taskTwo(LinkedList<String> lines) {
         var horizontalPosition = 0;
         var depth = 0;
         var aim = 0;
@@ -49,10 +43,4 @@ public class Day2 {
         return horizontalPosition * depth;
     }
 
-    private static LinkedList<String> getLines(InputStream input) {
-        InputStreamReader streamReader = new InputStreamReader(input, StandardCharsets.UTF_8);
-        BufferedReader reader = new BufferedReader(streamReader);
-
-        return new LinkedList<>(reader.lines().toList());
-    }
 }

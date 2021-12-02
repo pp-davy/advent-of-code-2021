@@ -1,16 +1,16 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.util.Arrays;
+import java.util.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class Day2Test {
-    String input;
+    LinkedList<String> input;
 
     @BeforeEach
     void before() {
-        input = """
+        String data = """
             forward 5
             down 5
             forward 8
@@ -18,19 +18,19 @@ class Day2Test {
             down 8
             forward 2
             """;
+
+        input = new LinkedList<>(Arrays.stream(data.split("\n")).toList());
     }
 
     @Test
     void taskOne() {
-        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        var got = Day2.taskOne(inputStream);
+        var got = Day2.taskOne(input);
         assertEquals(150, got);
     }
 
     @Test
     void taskTwo() {
-        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        var got = Day2.taskTwo(inputStream);
+        var got = Day2.taskTwo(input);
         assertEquals(900, got);
     }
 }
