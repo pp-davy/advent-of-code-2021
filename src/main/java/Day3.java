@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Day3 {
     public static int taskOne(LinkedList<String> lines) {
@@ -22,9 +23,45 @@ public class Day3 {
     }
 
     public static int taskTwo(LinkedList<String> lines) {
-//        var table = formatInputData(lines);
-//        System.out.println(Arrays.deepToString(table));
-        return 0;
+        return getOxygenGeneratorRating(lines) * getCO2ScrubberRating(lines);
+    }
+
+    public static int getOxygenGeneratorRating(LinkedList<String> lines) {
+        var table = formatInputData(lines);
+
+        for (int i = 0; i < table.length; i++) {
+            var mcb = getMostCommonBit(table[i]);
+            int finalI = i;
+            lines = lines.stream()
+                .filter(l -> Integer.parseInt(l.split("")[finalI]) == mcb)
+                .collect(Collectors.toCollection(LinkedList::new));
+
+            table = formatInputData(lines);
+        }
+
+        return Integer.parseInt(lines.get(0), 2);
+    }
+
+    public static int getCO2ScrubberRating(LinkedList<String> lines) {
+        var table = formatInputData(lines);
+
+        for (int i = 0; i < table.length; i++) {
+            var mcb = getMostCommonBit(table[i]);
+            var lcb = mcb == 1 ? 0 : 1;
+            int finalI = i;
+
+            lines = lines.stream()
+                .filter(l -> Integer.parseInt(l.split("")[finalI]) == lcb)
+                .collect(Collectors.toCollection(LinkedList::new));
+
+            if (lines.size() == 1) {
+                break;
+            }
+
+            table = formatInputData(lines);
+        }
+
+        return Integer.parseInt(lines.get(0), 2);
     }
 
     private static int[][] formatInputData(final LinkedList<String> lines) {
@@ -52,6 +89,6 @@ public class Day3 {
             }
         }
 
-        return (onesCount > zerosCount) ? 1 : 0;
+        return (onesCount > zerosCount || onesCount == zerosCount) ? 1 : 0;
     }
 }
