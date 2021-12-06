@@ -6,14 +6,14 @@ import java.util.LinkedList;
 
 public class Main {
     public static void main(String[] args) {
-        var filename = "day3.txt";
+        var filename = "day4.txt";
         var inputStream = open(filename);
         var input = getLines(inputStream);
         if (input.size() == 0) {
             throw new RuntimeException("failed to parse input file");
         }
 
-        var output = Day3.taskTwo(input);
+        var output = Day4.taskOne(input);
         System.out.println(output);
     }
 
