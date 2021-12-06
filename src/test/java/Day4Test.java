@@ -125,6 +125,6 @@ class Day4Test {
     @Test
     void taskTwo() {
         var got = Day4.taskTwo(inputOne);
-        assertEquals(230, got);
+        assertEquals(1924, got);
     }
 }

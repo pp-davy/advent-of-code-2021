@@ -10,19 +10,64 @@ public class Day4 {
         int winningNumber = 0;
         int[][] winningBoard = new int[0][];
 
-        for (int num : numbers) {
-            updateBoards(boards, num);
+        for (int n : numbers) {
+            updateBoards(boards, n);
             var result = haveWinner(boards);
             if (result.getLeft()) {
-                winningNumber = num;
+                winningNumber = n;
                 winningBoard = boards.get(result.getRight());
                 break;
             }
         }
 
-//        boards.forEach(Day4::printBoard);
+        return sumWinningBoardUnmarkedNumbers(winningBoard) * winningNumber;
+    }
+
+    public static int taskTwo(LinkedList<String> lines) {
+        LinkedList<int[][]> boards = getAllBoards(lines);
+        int[] numbers = getNumbers(lines);
+
+        int winningNumber = 0;
+        int[][] winningBoard = new int[0][];
+
+        for (int n : numbers) {
+            updateBoards(boards, n);
+            if (boards.size() == 1) {
+                winningNumber = n;
+                winningBoard = boards.get(0);
+                break;
+            }
+
+            boards.removeIf(board -> checkRows(board) || checkColumns(board));
+        }
 
         return sumWinningBoardUnmarkedNumbers(winningBoard) * winningNumber;
+    }
+
+    public static int[] getNumbers(LinkedList<String> lines) {
+        var numberLine = lines.get(0).split(",");
+        var output = new int[numberLine.length];
+
+        for (int i = 0; i < output.length; i++) {
+            output[i] = Integer.parseInt(numberLine[i]);
+        }
+
+        return output;
+    }
+
+    public static int[][] getNextBoard(LinkedList<String> lines, int offset) {
+        int[][] output = new int[5][5];
+
+        for (int lineNum = offset, i = 0; lineNum < 5 + offset; lineNum++, i++) {
+            output[i] = Arrays.stream(lines.get(lineNum)
+                    .strip()
+                    .replace("  ", " ")
+                    .split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        }
+
+        return output;
     }
 
     private static void updateBoards(final LinkedList<int[][]> boards, final int num) {
@@ -77,52 +122,22 @@ public class Day4 {
             }
 
             if (Arrays.stream(columnValues).filter(e -> e != -1).count() == 0) {
-               return true;
-            };
+                return true;
+            }
         }
 
         return false;
     }
 
-    public static int taskTwo(LinkedList<String> lines) {
-        return 0;
-    }
-
-    public static int[] getNumbers(LinkedList<String> lines) {
-        var numberLine = lines.get(0).split(",");
-        var output = new int[numberLine.length];
-
-        for (int i = 0; i < output.length; i++) {
-            output[i] = Integer.parseInt(numberLine[i]);
-        }
-
-        return output;
-    }
-
     private static LinkedList<int[][]> getAllBoards(LinkedList<String> lines) {
         LinkedList<int[][]> boards = new LinkedList<>();
-        int boardLength = 6;
+        int boardLineLength = 6;
 
-        for (int offset = 2; offset < lines.size(); offset += boardLength) {
+        for (int offset = 2; offset < lines.size(); offset += boardLineLength) {
             boards.add(getNextBoard(lines, offset));
         }
 
         return boards;
-    }
-
-    public static int[][] getNextBoard(LinkedList<String> lines, int offset) {
-        int[][] output = new int[5][5];
-
-        for (int lineNum = offset, i = 0; lineNum < 5 + offset; lineNum++, i++) {
-            output[i] = Arrays.stream(lines.get(lineNum)
-                    .strip()
-                    .replace("  ", " ")
-                    .split(" "))
-                .mapToInt(Integer::parseInt)
-                .toArray();
-        }
-
-        return output;
     }
 
     private static void printBoard(int[][] board) {

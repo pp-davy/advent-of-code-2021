@@ -13,7 +13,7 @@ public class Main {
             throw new RuntimeException("failed to parse input file");
         }
 
-        var output = Day4.taskOne(input);
+        var output = Day4.taskTwo(input);
         System.out.println(output);
     }
 
