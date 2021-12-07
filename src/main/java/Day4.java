@@ -45,14 +45,9 @@ public class Day4 {
     }
 
     public static int[] getNumbers(LinkedList<String> lines) {
-        var numberLine = lines.get(0).split(",");
-        var output = new int[numberLine.length];
-
-        for (int i = 0; i < output.length; i++) {
-            output[i] = Integer.parseInt(numberLine[i]);
-        }
-
-        return output;
+        return Arrays.stream(lines.get(0).split(","))
+            .mapToInt(Integer::parseInt)
+            .toArray();
     }
 
     public static int[][] getNextBoard(LinkedList<String> lines, int offset) {
@@ -83,16 +78,10 @@ public class Day4 {
     }
 
     private static int sumWinningBoardUnmarkedNumbers(final int[][] board) {
-        int sum = 0;
-        for (int[] row : board) {
-            for (int i : row) {
-                if (i == -1) {
-                    continue;
-                }
-                sum += i;
-            }
-        }
-        return sum;
+        return Arrays.stream(board)
+            .flatMapToInt(Arrays::stream)
+            .filter(i -> i != -1)
+            .sum();
     }
 
     private static ImmutablePair<Boolean, Integer> haveWinner(final LinkedList<int[][]> boards) {
